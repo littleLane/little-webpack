@@ -1,4 +1,4 @@
-这次是利用 `webpack.config.js` 配置文件打包 `lodash` 和 一个函数文件
+这次是利用 `webpack.config.js` 配置文件打包 `lodash`、样式文件 和 一个函数文件
 
 打开终端
 
@@ -14,15 +14,17 @@
 
 ```bash
 
-    Hash: 39683496d308241ed778
+    Hash: 29f7cb34e3f5c13dd10f
     Version: webpack 3.10.0
-    Time: 390ms
+    Time: 586ms
         Asset    Size  Chunks                    Chunk Names
-    bundle.js  544 kB       0  [emitted]  [big]  main
-        [0] ./app/index.js 254 bytes {0} [built]
+    bundle.js  561 kB       0  [emitted]  [big]  main
+        [0] ./app/index.js 282 bytes {0} [built]
         [2] (webpack)/buildin/global.js 509 bytes {0} [built]
         [3] (webpack)/buildin/module.js 517 bytes {0} [built]
-        + 1 hidden module
+        [4] ./style/index.css 1.09 kB {0} [built]
+        [5] ./node_modules/_css-loader@0.28.7@css-loader!./style/index.css 271 bytes {0} [built]
+            + 4 hidden modules
 
 ```
 

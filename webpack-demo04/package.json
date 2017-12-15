@@ -1,0 +1,20 @@
+{
+  "name": "webpack-demo04",
+  "version": "1.0.0",
+  "description": "这次是利用 `webpack.config.js` 配置文件打包 `lodash` 和 一个函数文件",
+  "main": "webpack.config.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "css-loader": "^0.28.7",
+    "style-loader": "^0.19.1",
+    "webpack": "^3.10.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4"
+  }
+}
