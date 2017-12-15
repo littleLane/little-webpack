@@ -2,7 +2,7 @@
 
 打开终端
 
-`cd webpack-demo01`
+`cd webpack-demo03`
 
 `npm install` 或者 `cnpm install` 或者 `yarn install`
 

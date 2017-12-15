@@ -1,0 +1,10 @@
+body{
+    background: yellow
+}
+
+.title{
+    color: brown;
+    font-size: 14px;
+    -webkit-animation: 0ms;
+            animation: 0ms
+}
