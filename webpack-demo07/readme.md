@@ -1,10 +1,8 @@
-## 利用 `extract-text-webpack-plugin` 插件启动多个提取实例将多个样式文件分开提取
-
-插件 `github `地址 https://github.com/webpack-contrib/extract-text-webpack-plugin
+## 将第三方框架和工具库提取出来
 
 打开终端
 
-`cd webpack-demo06`
+`cd webpack-demo07`
 
 `npm install` 或者 `cnpm install` 或者 `yarn install`
 
@@ -128,3 +126,18 @@ Child extract-text-webpack-plugin node_modules/_extract-text-webpack-plugin@3.0.
 </table>
 
 注意：使用 `postcss-loader` 依赖包时，要在项目的根目录建 `postcss.config.js` 配置文件，打包才能成功，否则终端会报相关配置文件不存在的错误。
+
+## 打包详解
+
+项目中引入了 `loash` 和 `moment` 两个 `js` 工具库，当直接在终端运行 `webpack` 或者 `npm run build` 后，再去查看生成的 `bundle.js` 文件，发现我们引入的两个工具库都被打包进去了。这样的打包方式不明智的，因为第三方工具库是相对固定不变的，我们希望利用浏览器的缓存机制将这些工具库缓存起来，这样就会很好的优化加载。还有就是我们在开发时如果改动了 `index.js` 文件，其实文件改动是很小的，但是每次都要重新打包生成 `bundle.js` 文件，其实里面的代码改动量是很小的，这样就得不偿失了。
+
+### 解决方案
+
+- 1、重命名 `webpack.config.js1` 为 `webpack.config.js` 进行打包，此时在 `dist` 目录会生成类似 `6f06133dc91680324acd.vendor.js` 和 `801fd8fd7efaf07bafa0.main.js` 的文件，但是这两个文件里面都包含 `moment` 的代码，显然这不是我们想要的
+
+- 2、重命名 `webpack.config.js2` 为 `webpack.config.js` 进行打包，此时在 `dist` 目录会生成类似 `6f06133dc91680324acd.vendor.js` 和 `801fd8fd7efaf07bafa0.main.js` 的文件，`vendor.js` 文件里面包含 `moment` 的代码，而 `main.js` 文件不包括，显然这就是我们想要的，但是这里只是对 `moment` 工具库做了处理，如果项目中引入了多个第三方工具库，怎么一起处理呢？
+
+- 3、重命名 `webpack.config.js3` 为 `webpack.config.js` 进行打包，此时在 `dist` 目录会生成类似 `6f06133dc91680324acd.vendor.js` 和 `801fd8fd7efaf07bafa0.main.js` 的文件，`vendor.js` 文件里面包含 `moment` 和 `lodash` 的代码，而 `main.js` 文件不包括，显然这就是我们想要的。但是还有一个问题不知道大家注意到了没有，那就是在每次项目打包的时候，生成的 `vendor.js` 拼接的 `chunkhash` 都变了，这样我们都不能从浏览器缓存中获益了
+
+- 4、重命名 `webpack.config.js4` 为 `webpack.config.js` 进行打包，此时在 `dist` 目录会生成类似 `6f06133dc91680324acd.vendor.js`、`5dff17e4514ac25f6c6f.manifest.js` 和 `801fd8fd7efaf07bafa0.main.js` 的文件.这里的问题在于，每次构建时，`webpack` 生成了一些 `webpack runtime` 代码，用来帮助 `webpack` 完成其工作。当只有一个 `bundle` 的时候，`runtime` 代码驻留在其中。但是当生成多个 `bundle` 的时候，运行时代码被提取到了公共模块中，在这里就是 `vendor` 文件。
+为了防止这种情况，我们需要将运行时代码提取到一个单独的 `manifest` 文件中。尽管我们又创建了另一个 `bundle`，其开销也被我们在 `vendor` 文件的长期缓存中获得的好处所抵消。

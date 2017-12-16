@@ -1,4 +1,4 @@
-这次是利用 `webpack.config.js` 配置文件打包 `lodash` 和 一个函数文件
+## 利用 `webpack.config.js` 配置文件进行打包
 
 打开终端
 

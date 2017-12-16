@@ -1,0 +1,64 @@
+//导出 node.js 处理路径的 path 模块
+const path = require('path');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+//多个提取实例
+const extractCSS = new ExtractTextPlugin('style/[name].css');
+const extractLESS = new ExtractTextPlugin('style/[name].less');
+
+//导出配置文件对象
+module.exports = {
+    //定义入口文件，文件路径是相对 webpack.config.js 的
+    //这里配置入口文件
+    entry: {
+        main: './app/index.js'
+    },
+
+    //定义输出文件
+    output: {
+        //生成文件的名字根据我们配置的入口文件的 `key` 加 `hash` 生成
+        filename: '[chunkhash].[name].js',
+
+        //设置输出文件存放的路径，利用 path.resolve 解析，__dirname 指的是 webpack.config.js 当前目录
+        //大致意思是在 webpack.config.js 所在目录新建一个 dist 目录，并将生成的 bundle.js 存放在生成的 dist 目录下
+        path: path.resolve(__dirname, 'dist')
+    },
+
+    // loaders 引用
+    module: {
+        rules: [{
+            //匹配 css 样式文件
+            test: /\.css$/,
+
+            //对于样式文件的打包引用，非要用这两个 loader 进行处理
+            //如果少了 style-loader 即使打包成功了，样式也不会生效
+            //如果少了 css-loader 样式文件就不会打包成功，解析不了样式文件
+            use: extractCSS.extract(['css-loader', 'postcss-loader'])
+        }, {
+            //匹配 less 样式文件
+            test: /\.less$/,
+
+            //对于样式文件的打包引用，非要用这两个 loader 进行处理
+            //如果少了 style-loader 即使打包成功了，样式也不会生效
+            //如果少了 css-loader 样式文件就不会打包成功，解析不了样式文件
+            use: extractLESS.extract(['css-loader', 'less-loader'])
+        }]
+    },
+
+    //利用插件将样式单独输出到一个文件
+    plugins: [
+        extractCSS,
+        extractLESS,
+
+        //配置 `webpack` 的 `CommonsChunkPlugin` 来提取公共的工具包文件
+        new webpack.optimize.CommonsChunkPlugin({
+            names: ['vendor', 'manifest'], //指定公共 `bundle` 的名字
+
+            minChunks: function (module) {
+                // 该配置假定你引入的 vendor 存在于 node_modules 目录中
+                return module.context && module.context.indexOf('node_modules') !== -1;
+             }
+        })
+    ]
+}

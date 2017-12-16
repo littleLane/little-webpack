@@ -1,4 +1,4 @@
-利用 `extract-text-webpack-plugin` 插件提取样式文件
+## 利用 `extract-text-webpack-plugin` 插件提取样式文件
 
 插件 `github `地址 https://github.com/webpack-contrib/extract-text-webpack-plugin
 
