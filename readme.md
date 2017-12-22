@@ -8,6 +8,8 @@
 
 使用 ` webpack ` 辅助开发，让开发者将着重点放在编码上面，把更多的时间放在编码上。
 
+ - 1、[knowledge point](./webpack-doc/knowledgePoint/readme.md)
+
 ## little-webpack 
 
 在最近一段时间里，公司利用 `Vue` 技术栈做了一套项目，其中的打包工具就是 ` webpack `。为真正开
